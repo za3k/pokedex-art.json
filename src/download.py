@@ -93,12 +93,12 @@ def main():
             link = e.select_one("img")['src']
             if animal.endswith("- Gigantamax"):
                 animal = animal.removesuffix(" - Gigantamax")
-                which = "Gigantamax: " + which
+                which = "Gigantamax: {which}"
             if animal.startswith("Mega "):
                 animal = animal.removeprefix("Mega ")
-                which = "Mega: " + which
+                which = f"Mega: {which}"
             if animal != data["name"]:
-                animal, which = data["name"], f"{animal}: which"
+                animal, which = data["name"], f"{animal}: {which}"
             data["art"][which] = link
 
         for link in data["art"].values():

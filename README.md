@@ -1,3 +1,8 @@
-Pokemon Data taken from [pokemondb.net](https://pokemondb.net/), please support them! (Full detailed information is not included -- please check out their site for more info! I just made this for an art game)
+Browse the pokedex [live online](https://za3k.github.io/pokedex-art.json/).
 
-Pokémon images & names © 1995-2025 Nintendo/Game Freak.
+If you are a coder, feel free to use the data directly.
+
+## Credits
+- Pokémon images & names © 1995-2025 Nintendo/Game Freak.
+- Pokemon Data taken from [pokemondb.net][https://pokemondb.net/], please support them!
+- Pokedex art by Cristopheros

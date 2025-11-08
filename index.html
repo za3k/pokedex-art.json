@@ -1,0 +1,145 @@
+<html>
+<head>
+    <title>Pokedex</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        function adjustDivs() {
+            var height = $(".pokedex").height()
+            var width = $(".pokedex").width() 
+            var eltRatio = width / height
+            const imageRatio = 855/635;
+            var imageHeight, imageWidth
+            if (eltRatio > imageRatio) {
+                imageHeight = height
+                imageWidth = height * imageRatio
+            } else {
+                imageWidth = width
+                imageHeight = width / imageRatio
+            }
+
+            // This could be done with vh/vw and calc(min) but whatever
+            $(".pokedex-top").css({
+                left: `${275/855*imageWidth}px`,
+                top: `${46/635*imageHeight}px`,
+                width: `${293/855*imageWidth}px`,
+                height: `${216/635*imageHeight}px`,
+                position: 'absolute',
+            })
+
+            $(".pokedex-bottom").css({
+                left: `${274/855*imageWidth}px`,
+                top: `${378/635*imageHeight}px`,
+                width: `${293/855*imageWidth}px`,
+                height: `${216/635*imageHeight}px`,
+                position: 'absolute',
+            })
+        }
+
+        async function main() {
+            adjustDivs()
+
+            // Populate a dropdown of pokemon to pick from
+            const raw = await (await fetch("data/pokedex.json")).json()
+            const select = $("select.pokemon")
+            const data = {}
+            for (const d of raw) {
+                const option = $(`<option value="${d.id}">${d.name}</option>`)
+                select.append(option)
+                data[d.id] = d
+            }
+
+            // When someone picks one, display it!
+            function onSelect(id) {
+                const d = data[id]
+                const image = d.art["Sugimori artwork"] || d.art["Sprite gen 1"]
+
+                $(".pokedex-top").empty()
+                    .append(`<h2>${d.number}: ${d.name}</h2>`)
+                    .append(`<img src="data/${image}">`)
+                
+            }
+            $(select).on("change", () => {
+                onSelect(select.val())
+            })
+            onSelect("bulbasaur")
+        }
+
+        $(document).ready(main)
+    </script>
+    <style>
+        /* CSS */
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .pokedex {
+            background-image: url("src/pokedex.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            font-family: monospace;
+            padding: 1em;
+            font-size: smaller;
+            border-top: 1px solid lightgrey;
+            background: white;
+        }
+        .pokedex-top {
+            background-color: transparent;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .pokedex-top h2 {
+            margin: 10px 0;
+        }
+        .pokedex-top img {
+            max-height: 100%;
+            max-width: 100%;
+            min-height: 0; /* Ugh this is required */
+            flex: 1 1;
+            /*
+            width: auto;
+            height: auto;
+            */
+        }
+        .pokedex-bottom {
+            background-color: transparent;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .pokedex-bottom select {
+            font-size: 40px;
+        }
+        /*
+        .pokedex-top, .pokedex-bottom {
+            border: 2px dashed grey;
+            box-sizing: border-box;
+            border-radius: 5px;
+        }
+        */
+    </style>
+</head>
+<body class="pokedex">
+    <div class="pokedex-top">
+        <h2>0001: Bulbasaur</h2>
+        <img href="data/artwork/bulbasaur.jpg">
+    </div>
+    <div class="pokedex-bottom">
+        <select class="pokemon" name="pokemon">
+        </select>
+    </div>
+    <footer><b>Pokedex</b> was written by <a href="https://za3k.com">za3k</a> as part of <a href="https://za3k.com/hackaday">hack-a-day</a>. The source code is <a href="https://github.com/za3k/pokedex-art.json">on github</a>.</footer>
+</body>
+</html>
