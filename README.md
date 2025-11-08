@@ -1,3 +1,5 @@
+[![](screenshot.png)](https://za3k.github.io/pokedex-art.json/)
+
 Browse the pokedex [live online](https://za3k.github.io/pokedex-art.json/).
 
 If you are a coder, feel free to use the data directly.
