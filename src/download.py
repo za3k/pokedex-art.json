@@ -77,11 +77,12 @@ def main():
         # Sprite links, which games have the pokemon
         data["art"] = {}
         data["gens"] = []
-        for gen, e in enumerate(soup.select(".sprites-table > tbody > tr:nth-child(1) > td:nth-child(n+2)"), 1):
+        gens = [int(e.text.removeprefix("Generation ")) for e in soup.select(".sprites-table > thead th:nth-child(n+2)")]
+        for gen, e in zip(gens, soup.select(".sprites-table > tbody > tr:nth-child(1) > td:nth-child(n+2)")):
             if x := e.select_one("a"):
                 data["art"][f"Sprite gen {gen}"] = x['href']
                 data["gens"].append(gen)
-        for gen, e in enumerate(soup.select(".sprites-table > tbody > tr:nth-child(2) > td:nth-child(n+2)"), 1):
+        for gen, e in zip(gens, soup.select(".sprites-table > tbody > tr:nth-child(2) > td:nth-child(n+2)")):
             if x := e.select_one("a"):
                 data["art"][f"Sprite gen {gen} shiny"] = x['href']
 
@@ -93,7 +94,7 @@ def main():
             link = e.select_one("img")['src']
             if animal.endswith("- Gigantamax"):
                 animal = animal.removesuffix(" - Gigantamax")
-                which = "Gigantamax: {which}"
+                which = f"Gigantamax: {which}"
             if animal.startswith("Mega "):
                 animal = animal.removeprefix("Mega ")
                 which = f"Mega: {which}"
